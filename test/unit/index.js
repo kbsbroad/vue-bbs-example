@@ -1,6 +1,9 @@
 import Vue from 'vue';
+import Vuetify from 'vuetify';
 
 Vue.config.productionTip = false;
+
+Vue.use(Vuetify);
 
 // require all test files (files that ends with .spec.js)
 const testsContext = require.context('./specs', true, /\.spec$/);

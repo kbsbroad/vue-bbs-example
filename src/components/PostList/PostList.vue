@@ -1,5 +1,6 @@
 <template>
-  <v-data-table
+  <div id="post-list">
+    <v-data-table
       v-model="selected"
       v-bind:headers="headers"
       v-bind:items="items"
@@ -8,51 +9,52 @@
       selected-key="name"
       class="elevation-1"
     >
-    <template slot="headers" scope="props">
-      <tr>
-        <th>
-          <v-checkbox
-            primary
-            hide-details
-            @click.native="toggleAll"
-            :input-value="props.all"
-            :indeterminate="props.indeterminate"
-          ></v-checkbox>
-        </th>
-        <th v-for="header in props.headers" :key="header.text"
-          :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
-          @click="changeSort(header.value)"
-        >
-          <v-icon>arrow_upward</v-icon>
-          {{ header.text }}
-        </th>
-      </tr>
-    </template>
-    <template slot="items" scope="props">
-      <tr :active="props.selected" @click="props.selected = !props.selected">
-        <td>
-          <v-checkbox
-            primary
-            hide-details
-            :input-value="props.selected"
-          ></v-checkbox>
-        </td>
-        <td>{{ props.item.name }}</td>
-        <td class="text-xs-right">{{ props.item.calories }}</td>
-        <td class="text-xs-right">{{ props.item.fat }}</td>
-        <td class="text-xs-right">{{ props.item.carbs }}</td>
-        <td class="text-xs-right">{{ props.item.protein }}</td>
-        <td class="text-xs-right">{{ props.item.sodium }}</td>
-        <td class="text-xs-right">{{ props.item.calcium }}</td>
-        <td class="text-xs-right">{{ props.item.iron }}</td>
-      </tr>
-    </template>
-  </v-data-table>
+      <template slot="headers" scope="props">
+        <tr>
+          <th>
+            <v-checkbox
+              primary
+              hide-details
+              @click.native="toggleAll"
+              :input-value="props.all"
+              :indeterminate="props.indeterminate"
+            ></v-checkbox>
+          </th>
+          <th v-for="header in props.headers" :key="header.text"
+            :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
+            @click="changeSort(header.value)"
+          >
+            <v-icon>arrow_upward</v-icon>
+            {{ header.text }}
+          </th>
+        </tr>
+      </template>
+      <template slot="items" scope="props">
+        <tr :active="props.selected" @click="props.selected = !props.selected">
+          <td>
+            <v-checkbox
+              primary
+              hide-details
+              :input-value="props.selected"
+            ></v-checkbox>
+          </td>
+          <td>{{ props.item.name }}</td>
+          <td class="text-xs-right">{{ props.item.calories }}</td>
+          <td class="text-xs-right">{{ props.item.fat }}</td>
+          <td class="text-xs-right">{{ props.item.carbs }}</td>
+          <td class="text-xs-right">{{ props.item.protein }}</td>
+          <td class="text-xs-right">{{ props.item.sodium }}</td>
+          <td class="text-xs-right">{{ props.item.calcium }}</td>
+          <td class="text-xs-right">{{ props.item.iron }}</td>
+        </tr>
+      </template>
+    </v-data-table>
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'posts',
+  name: 'post-list',
   data() {
     return {
       pagination: {
