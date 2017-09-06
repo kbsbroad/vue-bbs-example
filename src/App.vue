@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <v-app toolbar>
-      <page-header></page-header>
       <side-nav></side-nav>
+      <page-header></page-header>
       <main>
         <v-container fluid>
           <router-view></router-view>
