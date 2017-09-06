@@ -13,35 +13,35 @@ export default new Router({
     {
       path: '/posts/:page?',
       name: 'post-list',
-      component: () => import('@/components/PostList'),
+      component: () => import('@/containers/PostList'),
       props: true,
     },
     {
       path: '/post/:id(\\d+)',
       name: 'post-view',
-      component: () => import('@/components/PostView'),
+      component: () => import('@/containers/PostView'),
       props: true,
     },
     {
       path: '/post/create',
       name: 'post-create',
-      component: () => import('@/components/PostForm'),
+      component: () => import('@/containers/PostForm'),
     },
     {
       path: '/post/:id(\\d+)/edit',
       name: 'post-edit',
-      component: () => import('@/components/PostForm'),
+      component: () => import('@/containers/PostForm'),
       props: true,
     },
     {
       path: '/user/:id/profile',
       name: 'user-profile',
-      component: () => import('@/components/UserProfile'),
+      component: () => import('@/containers/UserProfile'),
       props: true,
     },
     {
       path: '*',
-      component: () => import('@/components/NotFound'),
+      component: () => import('@/containers/NotFound'),
     },
   ],
 });
