@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  app: 'post-view',
-};
+  app: 'post-view'
+}
 </script>

@@ -13,14 +13,14 @@
 </template>
 
 <script>
-import PageHeader from '@/components/PageHeader';
-import SideNav from '@/components/SideNav';
+import PageHeader from '@/components/PageHeader'
+import SideNav from '@/components/SideNav'
 
 export default {
   name: 'app',
   components: {
     'side-nav': SideNav,
-    'page-header': PageHeader,
-  },
-};
+    'page-header': PageHeader
+  }
+}
 </script>

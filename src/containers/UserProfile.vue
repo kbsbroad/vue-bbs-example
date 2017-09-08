@@ -4,6 +4,6 @@
 
 <script>
 export default {
-  name: 'user-profile',
-};
+  name: 'user-profile'
+}
 </script>

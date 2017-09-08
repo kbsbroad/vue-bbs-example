@@ -28,8 +28,8 @@ export default {
       content: '',
       contentRules: [
         v => (v && v.length <= 1000) || '내용은 1000자 이하로 가능합니다.',
-      ],
-    };
+      ]
+    }
   },
   methods: {
     submit() {
@@ -37,12 +37,12 @@ export default {
         this.$store.dispatch('createPost', {
           subject: this.subject,
           content: this.content,
-        });
+        })
       }
     },
     clear() {
-      this.$refs.form.reset();
-    },
-  },
-};
+      this.$refs.form.reset()
+    }
+  }
+}
 </script>

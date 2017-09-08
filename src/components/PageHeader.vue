@@ -10,8 +10,8 @@ export default {
   name: 'page-header',
   methods: {
     toggleDrawer() {
-      this.$store.commit('toggleDrawer', Boolean(!this.$store.state.drawer));
-    },
-  },
-};
+      this.$store.commit('toggleDrawer', Boolean(!this.$store.state.drawer))
+    }
+  }
+}
 </script>
