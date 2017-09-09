@@ -23,11 +23,11 @@ export default {
       subject: '',
       subjectRules: [
         v => !!v || '제목은 필수입니다.',
-        v => (v && v.length <= 100) || '제목은 100자 이하로 가능합니다.',
+        v => (v && v.length <= 100) || '제목은 100자 이하로 가능합니다.'
       ],
       content: '',
       contentRules: [
-        v => (v && v.length <= 1000) || '내용은 1000자 이하로 가능합니다.',
+        v => (v && v.length <= 1000) || '내용은 1000자 이하로 가능합니다.'
       ]
     }
   },
@@ -36,7 +36,7 @@ export default {
       if (this.$refs.form.validate()) {
         this.$store.dispatch('createPost', {
           subject: this.subject,
-          content: this.content,
+          content: this.content
         })
       }
     },

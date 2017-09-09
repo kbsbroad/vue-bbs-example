@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import PostView from '@/components/PostView'
+import PostView from '@/containers/PostView'
 
 describe('<post-view>', () => {
   it('should render correct contents', () => {

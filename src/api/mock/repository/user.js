@@ -6,14 +6,14 @@ import { users } from '../datastore'
  * @param {*} boardId
  * @param {*} options
  */
-export const getUsers = ({ skip = 1, limit = 10, direction = -1 }) => {
+export const getUsers = ({ page = 1, limit = 10, direction = -1 }) => {
   return Promise((resolve, reject) => {
-    const skip = (page - 1) * size
-    posts
+    const skip = (page - 1) * limit
+    users
       .find({})
       .sort({ _id: direction })
       .skip(skip)
-      .limit(size)
+      .limit(limit)
       .exec((err, docs) => {
         if (err) {
           reject(err.stack || err)
@@ -78,7 +78,7 @@ export const createUser = user => {
  */
 export const deleteUser = id => {
   return new Promise((resolve, reject) => {
-    users.remove({_id: id}, { multi: true }, , (err, numRemoved) => {
+    users.remove({_id: id}, { multi: true }, (err, numRemoved) => {
       if (err) {
         reject(err.stack || err)
       }

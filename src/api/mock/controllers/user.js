@@ -9,7 +9,7 @@ export const getUsers = ({ params, payload }) => {
   const { page = 1, size = 10, direction = -1 } = payload
   const skip = (page - 1) * size
 
-  return userRepo.getUsers({ skip, direction, limit: size})
+  return userRepo.getUsers({ skip, direction, limit: size })
 }
 
 /**
@@ -59,7 +59,7 @@ export const deleteUser = ({ params }) => {
  * @param {*} param0
  */
 export const login = ({ payload }) => {
-  return getUserByUsername( payload.username )
+  return userRepo.getUserByUsername(payload.username)
     .then(user => {
       // payload.password를 암호화하여 비교해야 하나,
       // mock에서는 단순 비교

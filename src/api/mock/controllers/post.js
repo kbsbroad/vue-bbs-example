@@ -1,4 +1,3 @@
-import Promise from 'bluebird'
 import * as postRepo from '../repository/post'
 
 /**
@@ -17,8 +16,11 @@ export const getPosts = ({ params, payload }) => {
       direction
     }
   }
-  return postRepo.getPosts(params.boardId, { skip, direction, limit: size})
-    .then(posts => result.data = posts)
+  return postRepo.getPosts(params.boardId, { skip, direction, limit: size })
+    .then(posts => {
+      result.data = posts
+      return result
+    })
     .then(() => postRepo.totalCount())
     .then(count => {
       result.metadata.total = count

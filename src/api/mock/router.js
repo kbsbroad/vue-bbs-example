@@ -1,25 +1,25 @@
 import Promise from 'bluebird'
 import pathToRegexp from 'path-to-regexp'
 
-const routes = {}
+let __routes = {}
 
-const router = (pattern, options = { method: 'GET' }, cb = () => {}) => {
+export const router = (pattern, options = { method: 'GET' }, cb = () => {}) => {
   const key = `${options.method.toUpperCase()} ${pattern}`
 
   const wrapCb = (request, response) => {
     return Promise.resolve(cb())
   }
 
-  routes[key] = {
+  __routes[key] = {
     options,
     cb: wrapCb
   }
 }
 
-const searchRoute = (url, method = 'GET') => {
+export const searchRoute = (url, method = 'GET') => {
   let result = null
 
-  for (key in routes) {
+  for (let key in __routes) {
     let keys = []
     const token = key.split(' ')
     const curMethod = token[0]
@@ -35,16 +35,25 @@ const searchRoute = (url, method = 'GET') => {
       keys.forEach((item, index) => {
         params[item.name] = matched[index + 1]
       })
-      result = Object.assign({}, routes[key])
+      result = Object.assign({}, __routes[key])
       result.params = params
-      return
+      break
     }
   }
 
   return result
 }
 
-export default {
-  router,
-  searchRoute
+/**
+ * 라우트 테이블 반환(테스트 용)
+ */
+export const getRoutes = () => {
+  return __routes
+}
+
+/**
+ * 라우트 테이블 초기화(테스트 용)
+ */
+export const clearRoutes = () => {
+  __routes = {}
 }

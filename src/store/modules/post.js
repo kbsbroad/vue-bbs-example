@@ -1,4 +1,4 @@
-import postApi from '../../api/post';
+import postApi from '../../api/post'
 
 export const type = {
   UPDATE_POSTS: 'updatePosts',

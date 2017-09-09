@@ -6,14 +6,14 @@ import { posts } from '../datastore'
  * @param {*} boardId
  * @param {*} options
  */
-export const getPosts = ({ skip = 1, limit = 10, direction = -1 }) => {
+export const getPosts = ({ page = 1, limit = 10, direction = -1 }) => {
   return Promise((resolve, reject) => {
-    const skip = (page - 1) * size
+    const skip = (page - 1) * limit
     posts
       .find({})
       .sort({ _id: direction })
       .skip(skip)
-      .limit(size)
+      .limit(limit)
       .exec((err, docs) => {
         if (err) {
           reject(err.stack || err)

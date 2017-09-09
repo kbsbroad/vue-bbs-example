@@ -42,6 +42,6 @@ export default new Router({
     {
       path: '*',
       component: () => import('@/containers/NotFound')
-    },
-  ],
+    }
+  ]
 })

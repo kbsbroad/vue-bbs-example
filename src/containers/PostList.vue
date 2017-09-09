@@ -3,7 +3,7 @@
     <v-data-table
       v-model="selected"
       v-bind:headers="headers"
-      v-bind:items="items"
+      v-bind:items="posts"
       select-all
       v-bind:pagination.sync="pagination"
       selected-key="name"
@@ -32,29 +32,39 @@
 </template>
 
 <script>
+import * as postApi from '../api/post'
+
 export default {
   name: 'post-list',
   data() {
     return {
       pagination: {
-        sortBy: 'name',
+        sortBy: 'name'
       },
       selected: [],
       headers: [
         {
           text: 'NO.',
-          value: 'name',
+          value: 'name'
         },
         {
           text: '제목',
-          value: 'subject',
+          value: 'subject'
         },
         {
           text: '작성자',
-          value: 'creator',
+          value: 'creator'
         }
-      ]
+      ],
+      posts: [],
+      page: 1,
+      direction: -1,
+      pageSize: 10,
+      total: 0
     }
+  },
+  mounted() {
+    this.fetchPosts()
   },
   methods: {
     toggleAll() {
@@ -68,11 +78,17 @@ export default {
         this.pagination.sortBy = column
         this.pagination.descending = false
       }
-    }
-  },
-  computed: {
-    posts() {
-      return this.$store.state.post.posts
+    },
+    fetchPosts() {
+      postApi.getPosts({
+        page: this.page,
+        size: this.size,
+        direction: this.direction
+      })
+      .then(result => {
+        this.posts = result.data
+        this.total = result.metadata.total
+      })
     }
   }
 }

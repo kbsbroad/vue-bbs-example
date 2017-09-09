@@ -5,7 +5,7 @@ import fetch from './mock/fetch'
  * @param {*} boardId
  * @param {*} options
  */
-export const getPosts = (boardId, options = { page = 1, size = 10, direction = -1 }) => {
+export const getPosts = (options = { page: 1, size: 10, direction: -1 }) => {
   return fetch(`/api/posts`, { method: 'GET' }, options)
 }
 

@@ -1,10 +1,10 @@
 import Vue from 'vue'
-import PostList from '@/components/UserProfile'
+import PostList from '@/containers/PostList'
 
-describe('<user-profile>', () => {
+describe('<post-list>', () => {
   it('should render correct contents', () => {
     const Constructor = Vue.extend(PostList)
     const vm = new Constructor().$mount()
-    expect(vm.$el.tagName.toUpperCase()).to.equal('DIV')
+    expect(vm.$el.id).to.equal('post-list')
   })
 })

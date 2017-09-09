@@ -37,7 +37,7 @@ export default {
       items: [
         { title: 'BOARDS', header: true },
         { title: 'Home', icon: 'dashboard' },
-        { title: 'About', icon: 'question_answer' },
+        { title: 'About', icon: 'question_answer' }
       ]
     }
   },
@@ -48,7 +48,7 @@ export default {
   },
   methods: {
     toggled(state) {
-      if(this.$store.state.drawer !== state) {
+      if (this.$store.state.drawer !== state) {
         this.$store.commit('toggleDrawer', state)
       }
     }

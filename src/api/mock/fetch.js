@@ -11,10 +11,10 @@ import { searchRoute } from './router'
  * [참고]
  *  - options.method는 mock에서는 크게 의미없다.
  */
-const fetch = (url, payload, options = { method: 'GET' }, cb) => {
-  const result = searchRoute(url, options.method)
+const fetch = (url, options = { data: null, method: 'GET' }, cb) => {
+  const request = searchRoute(url, options.method)
 
-  if (!result) {
+  if (!request) {
     const err = new Error('Not Found')
     if (cb) {
       // 콜백 함수가 들어오면 node callback 타입으로 넘겨준다.
@@ -26,20 +26,24 @@ const fetch = (url, payload, options = { method: 'GET' }, cb) => {
     }
   }
 
-  result.payload = payload
+  if (options.data) {
+    request.payload = options.data
+  }
 
-  let chain;
-  if (result['cb']) {
-    const rcb = result.cb
-    delete result.cb
-    chain = rcb(result)
+  let chain
+  if (request['cb']) {
+    const rcb = request.cb
+    delete request.cb
+    chain = rcb(request)
   } else {
-    chain = Promise.resolve(result)
+    chain = Promise.resolve(request)
   }
 
   if (cb) {
     // 콜백 함수가 들어오면 node callback 타입으로 넘겨준다.
-    return chain.then(result => cb(undefined, result, {}))
+    chain.then(result => {
+      return cb(null, result, {})
+    })
   } else {
     // 그외에는 promise 반환
     return chain
