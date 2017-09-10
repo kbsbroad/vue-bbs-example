@@ -3,9 +3,9 @@
 // we are also using it with karma-webpack
 //   https://github.com/webpack/karma-webpack
 
-const webpackConfig = require('../../build/webpack.test.conf');
+const webpackConfig = require('../../build/webpack.test.conf')
 
-module.exports = function (config) {
+module.exports = (config) => {
   config.set({
     // to run in additional browsers:
     // 1. install corresponding karma launcher
@@ -17,21 +17,21 @@ module.exports = function (config) {
     files: [
       // phantomjs의 Promise 객체 호환성 제공
       '../../node_modules/babel-polyfill/dist/polyfill.js',
-      './index.js',
+      './index.js'
     ],
     preprocessors: {
-      './index.js': ['webpack', 'sourcemap'],
+      './index.js': ['webpack', 'sourcemap']
     },
     webpack: webpackConfig,
     webpackMiddleware: {
-      noInfo: true,
+      noInfo: true
     },
     coverageReporter: {
       dir: './coverage',
       reporters: [
         { type: 'lcov', subdir: '.' },
-        { type: 'text-summary' },
-      ],
-    },
-  });
-};
+        { type: 'text-summary' }
+      ]
+    }
+  })
+}

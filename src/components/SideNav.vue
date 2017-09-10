@@ -30,7 +30,6 @@
 </template>
 
 <script>
-/* eslint-disable */
 export default {
   name: 'side-nav',
   data() {
@@ -38,21 +37,21 @@ export default {
       items: [
         { title: 'BOARDS', header: true },
         { title: 'Home', icon: 'dashboard' },
-        { title: 'About', icon: 'question_answer' },
-      ],
-    };
+        { title: 'About', icon: 'question_answer' }
+      ]
+    }
   },
   computed: {
     drawer() {
-      return this.$store.state.drawer;
-    },
+      return this.$store.state.drawer
+    }
   },
   methods: {
     toggled(state) {
-      if(this.$store.state.drawer !== state) {
-        this.$store.commit('toggleDrawer', state);
+      if (this.$store.state.drawer !== state) {
+        this.$store.commit('toggleDrawer', state)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
