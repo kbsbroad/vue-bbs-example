@@ -1,13 +1,19 @@
 <template>
   <div id="post-list">
+    <v-layout row justify-space-between>
+      <h5>Sample Board</h5>
+      <v-spacer></v-spacer>
+      <v-btn primary @click="goToPostForm" v-if="editable"><strong>새글 쓰기</strong></v-btn>
+    </v-layout>
+
     <v-data-table
-      v-model="selected"
-      v-bind:headers="headers"
-      v-bind:items="posts"
-      select-all
-      v-bind:pagination.sync="pagination"
-      selected-key="name"
       class="elevation-1"
+      v-model="selected"
+      select-all
+      selected-key="name"
+      :headers="headers"
+      :items="posts"
+      :pagination.sync="pagination"
     >
       <template slot="headers" scope="props">
         <tr>
@@ -21,10 +27,11 @@
         </tr>
       </template>
       <template slot="items" scope="props">
-        <tr :active="props.selected" @click="props.selected = !props.selected">
-          <td class="text-xs-center">{{ props.posts._id }}</td>
-          <td>{{ props.posts.subject }}</td>
-          <td>{{ props.posts.creator }}</td>
+        <tr :active="props.selected" @click="goToPostView(props.item._id)">
+          <td class="text-xs-center">{{ props.item._id }}</td>
+          <td>{{ props.item.subject }}</td>
+          <td>{{ props.item.creator.username }}</td>
+          <td>{{ props.item.createdAt }}</td>
         </tr>
       </template>
     </v-data-table>
@@ -32,41 +39,40 @@
 </template>
 
 <script>
-import * as postApi from '../api/post'
+import { FETCH_POSTS } from '@/store/types'
 
 export default {
   name: 'post-list',
   data() {
     return {
       pagination: {
-        sortBy: 'name'
+        page: 1,
+        sortBy: 'createdAt',
+        descending: true,
+        rowsPerPage: 10,
+        totalItems: 0
       },
       selected: [],
       headers: [
-        {
-          text: 'NO.',
-          value: 'name'
-        },
-        {
-          text: '제목',
-          value: 'subject'
-        },
-        {
-          text: '작성자',
-          value: 'creator'
-        }
-      ],
-      posts: [],
-      page: 1,
-      direction: -1,
-      pageSize: 10,
-      total: 0
+        { text: 'NO.', value: 'no' },
+        { text: '제목', value: 'subject' },
+        { text: '작성자', value: 'creator' },
+        { text: '작성일', value: 'createdAt' }
+      ]
     }
   },
   mounted() {
     this.fetchPosts()
   },
   methods: {
+    fetchPosts() {
+      this.$store.dispatch(FETCH_POSTS, {
+        page: this.pagination.page,
+        sort: this.pagination.column,
+        size: this.pagination.rowsPerPage,
+        direction: this.pagination.descending ? -1 : 1
+      })
+    },
     toggleAll() {
       if (this.selected.length) this.selected = []
       else this.selected = this.items.slice()
@@ -79,16 +85,19 @@ export default {
         this.pagination.descending = false
       }
     },
-    fetchPosts() {
-      postApi.getPosts({
-        page: this.page,
-        size: this.size,
-        direction: this.direction
-      })
-      .then(result => {
-        this.posts = result.data
-        this.total = result.metadata.total
-      })
+    goToPostForm() {
+      this.$router.push('/post/create')
+    },
+    goToPostView(id) {
+      this.$router.push(`/post/${id}`)
+    }
+  },
+  computed: {
+    posts() {
+      return this.$store.state.post.posts
+    },
+    editable() {
+      return !!this.$store.state.user.loginUser
     }
   }
 }

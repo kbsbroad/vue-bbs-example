@@ -16,5 +16,6 @@ export default () => {
   router('/api/user', { method: 'POST' }, userCtr.createUser)
   router('/api/user/:id', { method: 'PUT' }, userCtr.updateUser)
   router('/api/user/:id', { method: 'DELETE' }, userCtr.deleteUser)
-  router('/api/login', { method: 'GET' }, userCtr.login)
+  router('/api/login', { method: 'POST' }, userCtr.login)
+  router('/api/logout', { method: 'GET' }, userCtr.logout)
 }

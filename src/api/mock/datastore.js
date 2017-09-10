@@ -6,7 +6,7 @@ const users = new Datastore()
 // constraint 생성
 users.ensureIndex({ fieldName: 'username', unique: true })
 
-export default {
+export {
   posts,
   users
 }

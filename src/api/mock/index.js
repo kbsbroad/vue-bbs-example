@@ -1,5 +1,9 @@
 import installRoutes from './routes'
+import installSeeds from './seeds'
 
-export const installApi = () => {
+const install = () => {
   installRoutes()
+  installSeeds()
 }
+
+export default install

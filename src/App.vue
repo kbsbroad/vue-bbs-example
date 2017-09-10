@@ -1,8 +1,7 @@
 <template>
   <div id="app">
     <v-app toolbar>
-      <side-nav></side-nav>
-      <page-header></page-header>
+      <page-header title="Vue Simple BBS"></page-header>
       <main>
         <v-container fluid>
           <router-view></router-view>
@@ -14,12 +13,10 @@
 
 <script>
 import PageHeader from '@/components/PageHeader'
-import SideNav from '@/components/SideNav'
 
 export default {
   name: 'app',
   components: {
-    'side-nav': SideNav,
     'page-header': PageHeader
   }
 }

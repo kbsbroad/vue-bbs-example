@@ -1,12 +1,20 @@
 import fetch from './mock/fetch'
 
 /**
- * 해당 보드의 글 반환
+ * 해당 보드의 글 목록 반환
  * @param {*} boardId
  * @param {*} options
  */
-export const getPosts = (options = { page: 1, size: 10, direction: -1 }) => {
-  return fetch(`/api/posts`, { method: 'GET' }, options)
+export const getPosts = (options = { page: 1, size: 10, sort: 'createdAt', direction: -1 }) => {
+  return fetch(`/api/posts`, { method: 'GET', data: options })
+}
+
+/**
+ * 해당 보드의 글 반환
+ * @param {*} id
+ */
+export const getPost = id => {
+  return fetch(`/api/post/${id}`, { method: 'GET' })
 }
 
 /**
@@ -14,7 +22,7 @@ export const getPosts = (options = { page: 1, size: 10, direction: -1 }) => {
  * @param {Object} content
  */
 export const createPost = content => {
-  return fetch(`/api/post`, { method: 'POST' }, content)
+  return fetch(`/api/post`, { method: 'POST', data: content })
 }
 
 /**
@@ -22,7 +30,7 @@ export const createPost = content => {
  * @param {Object} content
  */
 export const updatePost = (id, content) => {
-  return fetch(`/api/post/${id}`, { method: 'PUT' }, content)
+  return fetch(`/api/post/${id}`, { method: 'PUT', data: content })
 }
 
 /**

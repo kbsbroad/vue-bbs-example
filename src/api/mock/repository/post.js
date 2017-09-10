@@ -1,4 +1,5 @@
 import Promise from 'bluebird'
+import moment from 'moment'
 import { posts } from '../datastore'
 
 /**
@@ -6,12 +7,11 @@ import { posts } from '../datastore'
  * @param {*} boardId
  * @param {*} options
  */
-export const getPosts = ({ page = 1, limit = 10, direction = -1 }) => {
-  return Promise((resolve, reject) => {
-    const skip = (page - 1) * limit
+export const getPosts = ({ skip = 1, limit = 10, sort = 'createdAt', direction = -1 }) => {
+  return new Promise((resolve, reject) => {
     posts
       .find({})
-      .sort({ _id: direction })
+      .sort({ [sort]: direction })
       .skip(skip)
       .limit(limit)
       .exec((err, docs) => {
@@ -29,7 +29,8 @@ export const getPosts = ({ page = 1, limit = 10, direction = -1 }) => {
  * @param {*} id
  */
 export const getPost = id => {
-  return Promise((resolve, reject) => {
+  console.log(id)
+  return new Promise((resolve, reject) => {
     posts.findOne({ _id: id }, (err, docs) => {
       if (err) {
         reject(err.stack || err)
@@ -44,7 +45,7 @@ export const getPost = id => {
  * fetch total count of posts
  */
 export const totalCount = () => {
-  return Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     posts.count({}, (err, count) => {
       if (err) {
         reject(err.stack || err)
@@ -56,19 +57,44 @@ export const totalCount = () => {
 }
 
 /**
- * create a post
- * @param {*} payload
+ * create a posts(bulk)
+ * @param {Array | Object} payload
  */
-export const insertPost = payload => {
-  return Promise((resolve, reject) => {
-    posts.insert(payload, (err, result) => {
+export const createPosts = payload => {
+  return new Promise((resolve, reject) => {
+    posts.insert(addCreateAt(payload), (err, newPosts) => {
       if (err) {
         reject(err.stack || err)
       }
 
-      resolve(result)
+      resolve(newPosts)
     })
   })
+}
+
+/**
+ * create a post
+ * @param {Object} post
+ */
+export const createPost = post => {
+  return createPosts(addCreateAt(post))
+}
+
+/**
+ * post 정보에 생성일시를 추가.
+ * @param {*} payload
+ */
+const addCreateAt = payload => {
+  const isoStr = moment().toISOString()
+  if (payload instanceof Array) {
+    payload.map(item => {
+      item.createdAt = isoStr
+    })
+  } else if (typeof payload === 'object') {
+    payload.createdAt = isoStr
+  }
+
+  return payload
 }
 
 /**
@@ -77,11 +103,13 @@ export const insertPost = payload => {
  * @param {*} condition
  */
 export const updatePost = (id, payload) => {
-  return Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     posts.update({ _id: id }, payload, (err, result) => {
       if (err) {
         reject(err.stack || err)
       }
+
+      console.log(result)
 
       resolve(result)
     })
@@ -93,7 +121,7 @@ export const updatePost = (id, payload) => {
  * @param {*} condition
  */
 export const deletePost = (id) => {
-  return Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     posts.remove({ _id: id }, { multi: true }, (err, numRemoved) => {
       if (err) {
         reject(err.stack || err)

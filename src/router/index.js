@@ -17,18 +17,18 @@ export default new Router({
       props: true
     },
     {
-      path: '/post/:id(\\d+)',
-      name: 'post-view',
-      component: () => import('@/containers/PostView'),
-      props: true
-    },
-    {
       path: '/post/create',
       name: 'post-create',
       component: () => import('@/containers/PostForm')
     },
     {
-      path: '/post/:id(\\d+)/edit',
+      path: '/post/:id',
+      name: 'post-view',
+      component: () => import('@/containers/PostView'),
+      props: true
+    },
+    {
+      path: '/post/:id/edit',
       name: 'post-edit',
       component: () => import('@/containers/PostForm'),
       props: true
@@ -38,6 +38,16 @@ export default new Router({
       name: 'user-profile',
       component: () => import('@/containers/UserProfile'),
       props: true
+    },
+    {
+      path: '/user/regist',
+      name: 'user-regist',
+      component: () => import('@/containers/UserRegistForm')
+    },
+    {
+      path: '/login',
+      name: 'login',
+      component: () => import('@/containers/Login')
     },
     {
       path: '*',

@@ -7,10 +7,15 @@ import 'vuetify/dist/vuetify.min.css'
 import App from './App'
 import router from './router'
 import store from './store'
+import installMock from './api/mock'
 
 Vue.config.productionTip = false
 
 Vue.use(Vuetify)
+
+if (process.env.NODE_ENV === 'development') {
+  installMock()
+}
 
 /* eslint-disable no-new */
 new Vue({

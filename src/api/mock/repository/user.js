@@ -7,7 +7,7 @@ import { users } from '../datastore'
  * @param {*} options
  */
 export const getUsers = ({ page = 1, limit = 10, direction = -1 }) => {
-  return Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     const skip = (page - 1) * limit
     users
       .find({})
@@ -58,18 +58,28 @@ export const getUserByUsername = username => {
 
 /**
  * 사용자 계정/프로필 생성
- * @param {*} user
+ * @param {Array | Object} user
  */
-export const createUser = user => {
+export const createUsers = payload => {
   return new Promise((resolve, reject) => {
-    users.insert(user, (err, user) => {
+    users.insert(payload, (err, newUsers) => {
+      console.log(newUsers)
       if (err) {
         reject(err.stack || err)
       }
 
-      resolve(user)
+      resolve(newUsers)
     })
   })
+}
+
+/**
+ * 사용자 계정/프로필 생성(편의 함수)
+ * @param {Object} user
+ */
+export const createUser = user => {
+  console.log(user)
+  return createUsers(user)
 }
 
 /**

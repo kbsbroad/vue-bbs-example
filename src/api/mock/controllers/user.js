@@ -1,5 +1,6 @@
 import Promise from 'bluebird'
 import * as userRepo from '../repository/user'
+import { setCookie, removeCookie } from '@/utils/cookie'
 
 /**
  * 해당 페이지의 사용자 목록 반환 요청 처리
@@ -27,7 +28,7 @@ export const getUser = ({ params }) => {
  * password에 대한 암호화 처리해야 하나 mock에서는 하지 않음.
  */
 export const createUser = ({ payload }) => {
-  return userRepo.insertUser(payload)
+  return userRepo.createUser(payload)
 }
 
 /**
@@ -64,7 +65,7 @@ export const login = ({ payload }) => {
       // payload.password를 암호화하여 비교해야 하나,
       // mock에서는 단순 비교
 
-      if (user.password !== payload.password) {
+      if (!user || user.password !== payload.password) {
         return Promise.reject(new Error('Invalid User'))
       }
 
@@ -72,6 +73,20 @@ export const login = ({ payload }) => {
         loginAt: new Date()
       })
 
+      // 서버의 세션을 쿠키로 임시 대체(30분후 파기로 설정)
+      setCookie('username', user.username, 30)
+
       return Promise.resolve(session)
     })
+}
+
+/**
+ * 로그아웃
+ * - 쿠키를 지우는 것으로 간단히 구현
+ */
+export const logout = () => {
+  return new Promise(resolve => {
+    removeCookie('username')
+    resolve()
+  })
 }

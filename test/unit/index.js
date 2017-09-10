@@ -1,8 +1,10 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import Vuetify from 'vuetify'
 
 Vue.config.productionTip = false
 
+Vue.use(Vuex)
 Vue.use(Vuetify)
 
 // require all test files (files that ends with .spec.js)

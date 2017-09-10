@@ -1,37 +1,56 @@
-import postApi from '../../api/post'
-
-export const type = {
-  UPDATE_POSTS: 'updatePosts',
-  UPDATE_TOTAL: 'updateTotal'
-}
+import * as postApi from '@/api/post'
+import * as type from '../types'
 
 const state = {
   posts: [],
-  total: 0
+  pagination: {
+    sortBy: 'createdAt',
+    page: 1,
+    rowsPerPage: 10,
+    descending: true,
+    totalItems: 0
+  }
 }
 
 const mutations = {
-  [type.UPDATE_POSTS](state, posts) {
-    state.posts = posts
+  [type.COMMIT_POSTS](state, result) {
+    state.posts = result.data
+    state.pagination = {
+      sortBy: result.metadata.sort,
+      page: result.metadata.page,
+      rowsPerPage: result.metadata.size,
+      descending: result.metadata.direction === -1,
+      totalItems: result.metadata.total
+    }
+    state.total = result.metadata.total
   },
-  [type.UPDATE_TOTAL](state, count) {
+  [type.COMMIT_TOTAL](state, count) {
     state.total = count
   }
 }
 
 const actions = {
-  getPosts({ commit }, options = { page: 1, size: 10, direction: -1 }) {
+  [type.FETCH_POSTS]({ commit }, options = { page: 1, size: 10, sort: 'createAt', direction: -1 }) {
     return postApi.getPosts(options)
       .then(result => {
         const posts = result.data
 
-        commit(type.UPDATE_POSTS, posts)
-        commit(type.UPDATE_TOTAL, result.metadata.total)
+        commit(type.COMMIT_POSTS, result)
         return posts
       })
+      .catch(err => {
+        console.log(err.stack || err)
+        return []
+      })
   },
-  createPost({ commit }, payload) {
+  [type.FETCH_POST](context, id) {
+    return postApi.getPost(id)
+  },
+  [type.ADD_POST](context, payload) {
     return postApi.createPost(payload)
+  },
+  [type.UPDATE_POST](context, payload) {
+    return postApi.updatePost(payload._id, payload)
   }
 }
 

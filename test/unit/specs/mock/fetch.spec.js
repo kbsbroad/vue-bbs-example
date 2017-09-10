@@ -14,13 +14,13 @@ describe('[mock] fetch 모듈 테스트', () => {
     updatedAt: '2017-09-08T23:11:23'
   }
 
-  before(() => {
+  beforeEach(() => {
     router('/api/post/:id', { method: 'GET' }, (req) => {
       return mockPost
     })
   })
 
-  after(() => {
+  afterEach(() => {
     clearRoutes()
   })
 

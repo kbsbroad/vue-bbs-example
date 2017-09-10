@@ -7,7 +7,7 @@ export const router = (pattern, options = { method: 'GET' }, cb = () => {}) => {
   const key = `${options.method.toUpperCase()} ${pattern}`
 
   const wrapCb = (request, response) => {
-    return Promise.resolve(cb())
+    return Promise.resolve(cb(request, response))
   }
 
   __routes[key] = {
