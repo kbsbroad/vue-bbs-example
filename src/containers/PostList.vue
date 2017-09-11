@@ -27,7 +27,11 @@
         <tr :active="props.selected">
           <td class="text-xs-center post-seq">{{ props.item.seq }}</td>
           <td><a href="#" @click.prevent="goToPostView(props.item._id)">{{ props.item.subject }}</a></td>
-          <td class="text-xs-center post-user"><a href="#" @click.prevent="goToProfile(props.item.creator.username)">{{ props.item.creator.username }}</a></td>
+          <td class="text-xs-center post-user">
+            <a href="#" @click.prevent="goToProfile(props.item.creator.username)">
+              {{ props.item.creator.name }}
+            </a>
+          </td>
           <td class="text-xs-center post-date">{{ formatDate(props.item.createdAt) }}</td>
         </tr>
       </template>
@@ -123,7 +127,7 @@ a:hover {
   width: 100px;
 }
 .post-user {
-  width: 120px;
+  width: 150px;
 }
 .post-date {
   width: 140px;
