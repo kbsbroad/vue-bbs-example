@@ -13,6 +13,7 @@
       selected-key="name"
       :headers="headers"
       :items="posts"
+      hide-actions
       :pagination.sync="pagination"
     >
       <template slot="headers" scope="props">
@@ -21,37 +22,41 @@
             :class="['column sortable', pagination.descending ? 'desc' : 'asc', header.value === pagination.sortBy ? 'active' : '']"
             @click="changeSort(header.value)"
           >
-            <v-icon>arrow_upward</v-icon>
             {{ header.text }}
           </th>
         </tr>
       </template>
       <template slot="items" scope="props">
-        <tr :active="props.selected" @click="goToPostView(props.item._id)">
-          <td class="text-xs-center">{{ props.item._id }}</td>
-          <td>{{ props.item.subject }}</td>
-          <td>{{ props.item.creator.username }}</td>
-          <td>{{ props.item.createdAt }}</td>
+        <tr :active="props.selected">
+          <td class="text-xs-center post-seq">{{ props.item.seq }}</td>
+          <td><a href="#" @click.prevent="goToPostView(props.item._id)">{{ props.item.subject }}</a></td>
+          <td class="text-xs-center post-user"><a href="#" @click.prevent="goToProfile(props.item.creator.username)">{{ props.item.creator.username }}</a></td>
+          <td class="text-xs-center post-date">{{ formatDate(props.item.createdAt) }}</td>
         </tr>
       </template>
     </v-data-table>
+    <div class="text-xs-center pt-2">
+      <v-pagination v-model="pagination.page" :length="pages"></v-pagination>
+    </div>
   </div>
 </template>
 
 <script>
 import { FETCH_POSTS } from '@/store/types'
+import { formatDate } from '@/utils/date'
 
 export default {
   name: 'post-list',
   data() {
     return {
       pagination: {
-        page: 1,
-        sortBy: 'createdAt',
+        page: this.$route.params.page ? Number(this.$route.params.page) : 1,
+        sortBy: 'seq',
         descending: true,
         rowsPerPage: 10,
         totalItems: 0
       },
+      posts: [],
       selected: [],
       headers: [
         { text: 'NO.', value: 'no' },
@@ -72,6 +77,17 @@ export default {
         size: this.pagination.rowsPerPage,
         direction: this.pagination.descending ? -1 : 1
       })
+      .then(result => {
+        this.posts = result.data
+        this.pagination.totalItems = result.metadata.total
+      })
+      .catch(err => {
+        if (err.message === 'Not Found') {
+          this.$router.push({ name: 'not-found' })
+        } else {
+          this.$router.push('/')
+        }
+      })
     },
     toggleAll() {
       if (this.selected.length) this.selected = []
@@ -90,15 +106,40 @@ export default {
     },
     goToPostView(id) {
       this.$router.push(`/post/${id}`)
+    },
+    goToProfile(username) {
+      this.$router.push(`/user/${username}/profile`)
+    },
+    formatDate(datestr) {
+      return formatDate(datestr)
     }
   },
   computed: {
-    posts() {
-      return this.$store.state.post.posts
-    },
     editable() {
       return !!this.$store.state.user.loginUser
+    },
+    pages() {
+      return this.pagination.rowsPerPage ? Math.ceil(this.posts.length / this.pagination.rowsPerPage) : 0
     }
   }
 }
 </script>
+
+<style scoped>
+a {
+  color: black;
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
+.post-seq {
+  width: 100px;
+}
+.post-user {
+  width: 120px;
+}
+.post-date {
+  width: 140px;
+}
+</style>

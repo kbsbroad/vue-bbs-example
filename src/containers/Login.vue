@@ -30,6 +30,7 @@
 <script>
 import { LOGIN } from '@/store/types'
 import AlertMessage from '@/components/AlertMessage'
+import { checkAccountRule } from '@/utils/string'
 
 export default {
   name: 'login',
@@ -43,7 +44,7 @@ export default {
       password: '',
       rules: [
         v => !!v || 'This feild is required',
-        v => (v && (v.length >= 5 && v.length <= 16)) || '5자 이상 16자 이하로 가능합니다.'
+        v => checkAccountRule(v)
       ]
     }
   },

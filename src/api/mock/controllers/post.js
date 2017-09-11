@@ -1,5 +1,4 @@
 import Promise from 'bluebird'
-// import moment from 'moment'
 import * as postRepo from '../repository/post'
 import * as userRepo from '../repository/user'
 import { checkAuth } from '../utils'
@@ -23,6 +22,9 @@ export const getPosts = (req) => {
   }
   return postRepo.getPosts({ skip, direction, sort, limit: size })
     .then(posts => {
+      if (!posts || (posts && posts.length <= 0)) {
+        return Promise.reject(new Error('Not Found'))
+      }
       result.data = posts
       return result
     })
@@ -39,6 +41,13 @@ export const getPosts = (req) => {
  */
 export const getPost = ({ params }) => {
   return postRepo.getPost(params.id)
+    .then(post => {
+      if (!post) {
+        return Promise.reject(new Error('Not Found'))
+      }
+
+      return Promise.resolve(post)
+    })
 }
 
 /**

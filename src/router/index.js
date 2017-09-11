@@ -45,12 +45,18 @@ export default new Router({
       component: () => import('@/containers/UserRegistForm')
     },
     {
+      path: '/user/:id/edit',
+      name: 'user-edit',
+      component: () => import('@/containers/UserRegistForm')
+    },
+    {
       path: '/login',
       name: 'login',
       component: () => import('@/containers/Login')
     },
     {
       path: '*',
+      name: 'not-found',
       component: () => import('@/containers/NotFound')
     }
   ]

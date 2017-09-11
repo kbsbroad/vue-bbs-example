@@ -13,15 +13,14 @@ Vue.config.productionTip = false
 
 Vue.use(Vuetify)
 
-if (process.env.NODE_ENV === 'development') {
-  installMock()
-}
-
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  router,
-  store,
-  template: '<App/>',
-  components: { App }
-})
+installMock()
+  .then(() => {
+    /* eslint-disable no-new */
+    new Vue({
+      el: '#app',
+      router,
+      store,
+      template: '<App/>',
+      components: { App }
+    })
+  })

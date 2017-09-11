@@ -5,12 +5,19 @@ import fetch from './mock/fetch'
  * @param {*} id
  */
 export const getUser = id => {
-  return fetch(`/api/user/:id`, { method: 'GET' })
+  return fetch(`/api/user/${id}`, { method: 'GET' })
 }
 
 export const addUser = payload => {
   return fetch('/api/user', {
     method: 'POST',
+    data: payload
+  })
+}
+
+export const updateUser = (username, payload) => {
+  return fetch(`/api/user/${username}`, {
+    method: 'PUT',
     data: payload
   })
 }

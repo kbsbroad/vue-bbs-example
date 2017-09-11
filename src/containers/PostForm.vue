@@ -61,9 +61,9 @@ export default {
         }
 
         this.$store.dispatch(action, payload)
-        .then(() => {
-          this.$router.push(nextUrl)
-        })
+          .then(() => {
+            this.$router.push(nextUrl)
+          })
       }
     },
     clear() {

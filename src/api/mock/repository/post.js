@@ -1,6 +1,6 @@
 import Promise from 'bluebird'
 import moment from 'moment'
-import { posts } from '../datastore'
+import { posts, postSeq } from '../datastore'
 
 /**
  * fetch posts
@@ -29,7 +29,6 @@ export const getPosts = ({ skip = 1, limit = 10, sort = 'createdAt', direction =
  * @param {*} id
  */
 export const getPost = id => {
-  console.log(id)
   return new Promise((resolve, reject) => {
     posts.findOne({ _id: id }, (err, docs) => {
       if (err) {
@@ -62,13 +61,17 @@ export const totalCount = () => {
  */
 export const createPosts = payload => {
   return new Promise((resolve, reject) => {
-    posts.insert(addCreateAt(payload), (err, newPosts) => {
-      if (err) {
-        reject(err.stack || err)
-      }
+    return addSeqToPayload(payload)
+      .then(payload => addCreateAt(payload))
+      .then(payload => {
+        posts.insert(payload, (err, newPosts) => {
+          if (err) {
+            reject(err.stack || err)
+          }
 
-      resolve(newPosts)
-    })
+          resolve(newPosts)
+        })
+      })
   })
 }
 
@@ -77,9 +80,49 @@ export const createPosts = payload => {
  * @param {Object} post
  */
 export const createPost = post => {
-  return createPosts(addCreateAt(post))
+  return createPosts(post)
 }
 
+const addSeqToPayload = payload => {
+  return appendSeq(payload)
+    .then(nextSeq => {
+      return updateSeq(nextSeq)
+    })
+    .then(() => payload)
+}
+
+const appendSeq = payload => {
+  return new Promise((resolve, reject) => {
+    postSeq.findOne({}, (err, row) => {
+      let seq = row.seq
+      if (err) {
+        reject(err.stack || err)
+      }
+
+      let nextSeq = seq === 0 ? ++seq : seq
+      if (payload instanceof Array) {
+        payload.map(item => {
+          item.seq = nextSeq++
+        })
+      } else if (typeof payload === 'object') {
+        payload.seq = nextSeq++
+      }
+      resolve(nextSeq)
+    })
+  })
+}
+
+const updateSeq = nextSeq => {
+  return new Promise((resolve, reject) => {
+    postSeq.update({}, { seq: nextSeq }, err => {
+      if (err) {
+        reject(err.stack || err)
+      }
+
+      resolve()
+    })
+  })
+}
 /**
  * post 정보에 생성일시를 추가.
  * @param {*} payload
@@ -104,15 +147,18 @@ const addCreateAt = payload => {
  */
 export const updatePost = (id, payload) => {
   return new Promise((resolve, reject) => {
-    posts.update({ _id: id }, payload, (err, result) => {
-      if (err) {
-        reject(err.stack || err)
+    posts.update(
+      { _id: id },
+      { $set: payload },
+      { multi: true },
+      (err, result) => {
+        if (err) {
+          reject(err.stack || err)
+        }
+
+        resolve(result)
       }
-
-      console.log(result)
-
-      resolve(result)
-    })
+    )
   })
 }
 

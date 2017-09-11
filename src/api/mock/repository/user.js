@@ -46,7 +46,7 @@ export const getUser = id => {
  */
 export const getUserByUsername = username => {
   return new Promise((resolve, reject) => {
-    users.findOne({ username }, (err, user) => {
+    users.findOne({ username: username }, (err, user) => {
       if (err) {
         reject(err.stack || err)
       }
@@ -63,7 +63,6 @@ export const getUserByUsername = username => {
 export const createUsers = payload => {
   return new Promise((resolve, reject) => {
     users.insert(payload, (err, newUsers) => {
-      console.log(newUsers)
       if (err) {
         reject(err.stack || err)
       }
@@ -78,8 +77,27 @@ export const createUsers = payload => {
  * @param {Object} user
  */
 export const createUser = user => {
-  console.log(user)
   return createUsers(user)
+}
+
+/**
+ * 사용자 계정/프로필 수정
+ * @param {Object} user
+ */
+export const updateUser = (username, payload) => {
+  return new Promise((resolve, reject) => {
+    users.update(
+      { username: username },
+      { $set: payload },
+      { multi: true },
+      (err, newUsers) => {
+        if (err) {
+          reject(err.stack || err)
+        }
+        resolve(newUsers)
+      }
+    )
+  })
 }
 
 /**

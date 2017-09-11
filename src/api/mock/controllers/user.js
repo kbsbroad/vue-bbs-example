@@ -18,7 +18,7 @@ export const getUsers = ({ params, payload }) => {
  * @param {*} param0
  */
 export const getUser = ({ params }) => {
-  return userRepo.getUser(params.id)
+  return userRepo.getUserByUsername(params.id)
 }
 
 /**
@@ -42,6 +42,10 @@ export const updateUser = ({ payload, params }) => {
 
   if (payload['username']) {
     delete payload.username
+  }
+
+  if (!payload['password'] || payload['password'] === '') {
+    delete payload.password
   }
 
   return userRepo.updateUser(params.id, payload)

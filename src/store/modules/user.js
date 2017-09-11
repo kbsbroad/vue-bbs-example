@@ -31,6 +31,12 @@ const actions = {
   },
   [type.ADD_USER](context, payload) {
     return userApi.addUser(payload)
+  },
+  [type.FETCH_USER](context, username) {
+    return userApi.getUser(username)
+  },
+  [type.UPDATE_USER](context, payload) {
+    return userApi.updateUser(payload.username, payload)
   }
 }
 

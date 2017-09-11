@@ -8,6 +8,7 @@ const __seeds = [
     password: 'tiger',
     name: 'Scott Tiger',
     email: 'scott.tiger@example.com',
+    phone: '+82-10-1111-2222',
     createdAt: moment().toISOString()
   },
   {
@@ -15,6 +16,7 @@ const __seeds = [
     password: 'monkey',
     name: 'Robert Monkey',
     email: 'robert.monkey@example.com',
+    phone: '+82-10-3333-4444',
     createdAt: moment().toISOString()
   }
 ]
