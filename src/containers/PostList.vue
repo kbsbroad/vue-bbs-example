@@ -9,8 +9,6 @@
     <v-data-table
       class="elevation-1"
       v-model="selected"
-      select-all
-      selected-key="name"
       :headers="headers"
       :items="posts"
       hide-actions

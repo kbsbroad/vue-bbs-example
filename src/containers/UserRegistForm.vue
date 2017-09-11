@@ -25,7 +25,7 @@
                 </v-flex>
               </v-layout>
               <v-layout row>
-                <v-flex xs12 sm6>
+                <v-flex xs6>
                   <v-text-field
                     type="password"
                     ref="password"
@@ -38,7 +38,7 @@
                     :required="!reqUsername"
                   ></v-text-field>
                 </v-flex>
-                <v-flex xs12 sm6>
+                <v-flex xs6>
                   <v-text-field
                     type="password"
                     ref="passwordConfirm"
