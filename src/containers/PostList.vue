@@ -68,7 +68,7 @@ export default {
   },
   methods: {
     fetchPosts() {
-      this.$store.dispatch(FETCH_POSTS, {
+      return this.$store.dispatch(FETCH_POSTS, {
         page: this.pagination.page,
         sort: this.pagination.column,
         size: this.pagination.rowsPerPage,
@@ -77,6 +77,7 @@ export default {
       .then(result => {
         this.posts = result.data
         this.pagination.totalItems = result.metadata.total
+        return result
       })
       .catch(err => {
         if (err.message === 'Not Found') {

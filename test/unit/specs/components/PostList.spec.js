@@ -18,4 +18,15 @@ describe('<post-list>', () => {
   it('should render correct contents', () => {
     expect(vm.getComponent().$el.id).to.equal('post-list')
   })
+
+  it('fetchPosts() 테스트', done => {
+    const component = vm.getComponent()
+    component
+      .fetchPosts()
+      .then(() => {
+        expect(component.posts.length).to.equal(1)
+        done()
+      })
+      .catch(done)
+  })
 })

@@ -16,7 +16,6 @@ export const wrapTestComponent = ({ router, store }) => {
     `
 
     const vm = new Vue({
-      name: componentName,
       router,
       store,
       components: {
